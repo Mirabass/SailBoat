@@ -37,11 +37,12 @@ void SailBoat::tiltRudder(const int direction, const float dt)
 	rudder.changeAngle(float(direction), dt);
 }
 
-void SailBoat::Update(const float dt)
+void SailBoat::Update(const float dt, Board& brd)
 {
 	bearing += speedOfTurning * dt * rudder.getAngle();
 	position.x += speedToWater * dt * sin((bearing)*M_PI/180.0f);
 	position.y += speedToWater * dt * cos((bearing-180)*M_PI/180.0f);
+	brd.setCompassBearing(bearing);
 }
 
 void SailBoat::Draw(Graphics& gfx) const

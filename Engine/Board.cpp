@@ -22,7 +22,7 @@ void Board::Draw(Graphics& gfx) const
 	gfx.DrawRect(leftBorder, oldPaper);
 	gfx.DrawRect(tools, oldPaper);
 
-	compass.Draw(gfx);
+	compass.Draw(gfx, topLeftToolsScreen);
 }
 
 Vec2 Board::getTLscreenPos() const
@@ -35,12 +35,27 @@ Vec2 Board::getBRscreenPos() const
 	return bottomRightPlayScreen;
 }
 
-void Board::Compass::setCompassBearing(const float bearing)
+void Board::setCompassBearing(const float TrueBearing)
 {
-	compassBearing = bearing;
+	compass.setCompassBearing(-TrueBearing);
 }
 
-void Board::Compass::Draw(Graphics & gfx) const
+void Board::Compass::setCompassBearing(const float CompassNorth)
 {
+	compassNorth = CompassNorth;
+}
 
+void Board::Compass::Draw(Graphics & gfx, Vec2 topLeftToolsScreen) const
+{
+	Vec2 CompassPos = topLeftToolsScreen + Vec2((Graphics::ScreenWidth - topLeftToolsScreen.x)/2,110);
+	float blackStripeRadiusTop = 92.0f;
+	float blackStripeRadiusBottom = 74.0f;
+	gfx.DrawCircle(CompassPos.x, CompassPos.y, 98, Colors::Gray);
+	gfx.DrawCircle(CompassPos.x, CompassPos.y, blackStripeRadiusTop, Colors::Black);
+	gfx.DrawCircle(CompassPos.x, CompassPos.y, blackStripeRadiusBottom, Colors::Gray);
+	gfx.DrawCircle(CompassPos.x, CompassPos.y, 6, Colors::Cyan);
+	Vec2 pointerPos = { 0,-(blackStripeRadiusTop + blackStripeRadiusBottom) / 2 };
+	pointerPos.Rotate(compassNorth);
+	pointerPos = CompassPos + pointerPos;
+	gfx.DrawCircle(pointerPos.x, pointerPos.y, (blackStripeRadiusTop - blackStripeRadiusBottom) / 4, Colors::Red);
 }

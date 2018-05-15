@@ -14,7 +14,7 @@ public:
 	Vec2 getLocation() const;
 	float getBearing() const;
 	void tiltRudder(const int direction, const float dt);
-	void Update(const float dt);
+	void Update(const float dt, Board& brd);
 	void Draw(Graphics& gfx) const;
 
 	class Hull

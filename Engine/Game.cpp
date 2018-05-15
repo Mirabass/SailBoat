@@ -54,7 +54,7 @@ void Game::UpdateModel(float dt)
 	{
 		playerBoat.tiltRudder(+1, dt);
 	}
-	playerBoat.Update(dt);
+	playerBoat.Update(dt, brd);
 }
 
 void Game::ComposeFrame()
