@@ -24,22 +24,42 @@
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
-	gfx( wnd )
+	gfx( wnd ),
+	playerBoat(Vec2(3000,4000))
 {
+
 }
 
 void Game::Go()
 {
 	gfx.BeginFrame();	
-	UpdateModel();
+	float elapsedTime = ft.Mark();
+	while (elapsedTime > 0.0f)
+	{
+		const float dt = std::min(0.0025f, elapsedTime);
+		UpdateModel(dt);
+		elapsedTime -= dt;
+	}
 	ComposeFrame();
 	gfx.EndFrame();
 }
 
-void Game::UpdateModel()
+void Game::UpdateModel(float dt)
 {
+	if (wnd.kbd.KeyIsPressed(VK_LEFT))
+	{
+		playerBoat.tiltRudder(-1,dt);
+	}
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+	{
+		playerBoat.tiltRudder(+1, dt);
+	}
+	playerBoat.Update(dt);
 }
 
 void Game::ComposeFrame()
 {
+	sea.Draw(playerBoat, brd, gfx);
+	playerBoat.Draw(gfx);
+	brd.Draw(gfx);
 }

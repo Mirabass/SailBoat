@@ -19,11 +19,11 @@
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
 #pragma once
-#include "ChiliWin.h"
 #include <d3d11.h>
 #include <wrl.h>
 #include "ChiliException.h"
 #include "Colors.h"
+#include "RectF.h"
 
 class Graphics
 {
@@ -31,7 +31,7 @@ public:
 	class Exception : public ChiliException
 	{
 	public:
-		Exception( HRESULT hr,const std::wstring& note,const wchar_t* file,unsigned int line );
+		Exception(HRESULT hr, const std::wstring& note, const wchar_t* file, unsigned int line);
 		std::wstring GetErrorName() const;
 		std::wstring GetErrorDescription() const;
 		virtual std::wstring GetFullMessage() const override;
@@ -43,21 +43,32 @@ private:
 	// vertex format for the framebuffer fullscreen textured quad
 	struct FSQVertex
 	{
-		float x,y,z;		// position
-		float u,v;			// texcoords
+		float x, y, z;		// position
+		float u, v;			// texcoords
 	};
 public:
-	Graphics( class HWNDKey& key );
-	Graphics( const Graphics& ) = delete;
-	Graphics& operator=( const Graphics& ) = delete;
+	Graphics(class HWNDKey& key);
+	Graphics(const Graphics&) = delete;
+	Graphics& operator=(const Graphics&) = delete;
 	void EndFrame();
 	void BeginFrame();
-	void PutPixel( int x,int y,int r,int g,int b )
+	void PutPixel(int x, int y, int r, int g, int b)
 	{
-		PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );
+		PutPixel(x, y, { unsigned char(r),unsigned char(g),unsigned char(b) });
 	}
-	void PutPixel( int x,int y,Color c );
+	void PutPixel(int x, int y, Color c);
+	void DrawRect(int x0, int y0, int x1, int y1, Color c);
+	void DrawRect(const RectF& rect, Color c)
+	{
+		DrawRect(int(rect.left), int(rect.top), int(rect.right), int(rect.bottom), c);
+	}
+	void DrawCircle(int x, int y, int radius, Color c);
+	void DrawIsoRightTriUL(int x, int y, int size, Color c);
+	void DrawIsoRightTriUR(int x, int y, int size, Color c);
+	void DrawIsoRightTriBL(int x, int y, int size, Color c);
+	void DrawIsoRightTriBR(int x, int y, int size, Color c);
 	~Graphics();
+	static RectF GetScreenRect();
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;
 	Microsoft::WRL::ComPtr<ID3D11Device>				pDevice;
@@ -73,6 +84,6 @@ private:
 	D3D11_MAPPED_SUBRESOURCE							mappedSysBufferTexture;
 	Color*                                              pSysBuffer = nullptr;
 public:
-	static constexpr int ScreenWidth = 800;
-	static constexpr int ScreenHeight = 600;
+	static constexpr int ScreenWidth = 1173;
+	static constexpr int ScreenHeight = 660;
 };
