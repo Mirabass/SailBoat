@@ -68,8 +68,8 @@ Vec2 Vec2::GetNormalized() const
 Vec2 & Vec2::Rotate(const float angle)
 {
 	Vec2 rotated;
-	rotated.x = this->x * cos(angle*M_PI / 180) - this->y * sin(angle*M_PI / 180);
-	rotated.y = this->x * sin(angle*M_PI / 180) + this->y * cos(angle*M_PI / 180);
+	rotated.x = this->x * cos(angle*float(M_PI) / 180.0f) - this->y * sin(angle*float(M_PI) / 180.0f);
+	rotated.y = this->x * sin(angle*float(M_PI) / 180.0f) + this->y * cos(angle*float(M_PI) / 180.0f);
 	*this = rotated;
 	return *this;
 }

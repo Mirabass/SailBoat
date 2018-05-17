@@ -40,14 +40,15 @@ void SailBoat::tiltRudder(const int direction, const float dt)
 void SailBoat::Update(const float dt, Board& brd)
 {
 	bearing += speedOfTurning * dt * rudder.getAngle();
-	position.x += speedToWater * dt * sin((bearing)*M_PI/180.0f);
-	position.y += speedToWater * dt * cos((bearing-180)*M_PI/180.0f);
+	position.x += speedToWater * dt * sin((bearing)*float(M_PI)/180.0f);
+	position.y += speedToWater * dt * cos((bearing-180)*float(M_PI)/180.0f);
 	brd.setCompassBearing(bearing);
 }
 
 void SailBoat::Draw(Graphics& gfx) const
 {
 	hull.Draw(gfx);
+	SpriteCodex::DrawMast(Vec2(playerBoatLocationX + Hull::hullWidth/2 -26, playerBoatLocationY + 80), gfx);
 	rudder.Draw(gfx);
 }
 
@@ -95,5 +96,11 @@ float SailBoat::Rudder::getAngle() const
 
 void SailBoat::Rudder::Draw(Graphics & gfx) const
 {
-	SpriteCodex::DrawRudder(Hull::hullHeight, Hull::hullWidth, playerBoatLocationX, playerBoatLocationY, rudderAngle, gfx);
+	int rudderWidth = 4;
+	float rudderLength = 20.0f;
+	Vec2 rudderCentre = { float(playerBoatLocationX) + float(Hull::hullWidth) / 2,float(playerBoatLocationY + Hull::hullHeight) };
+	Vec2 vecOfRudder = { 0,rudderLength };
+	vecOfRudder.Rotate(-rudderAngle);
+	Vec2 rudderEnd = rudderCentre + vecOfRudder;
+	gfx.DrawAbscissa(rudderCentre, rudderEnd, rudderWidth, rudderColor);
 }

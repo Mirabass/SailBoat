@@ -25,6 +25,7 @@
 #include <assert.h>
 #include <string>
 #include <array>
+#include <math.h>
 
 // Ignore the intellisense error "cannot open source file" for .shh files.
 // They will be created during the build sequence before the preprocessor runs.
@@ -354,6 +355,32 @@ void Graphics::DrawCircle(int x, int y, int radius, Color c)
 			{
 				PutPixel(x_loop, y_loop, c);
 			}
+		}
+	}
+}
+
+void Graphics::DrawAbscissa(const Vec2 & PointA, const Vec2 & PointB, const int width, Color c)
+{
+	float Xlength = PointB.x - PointA.x;
+	float Ylength = PointB.y - PointA.y;
+	float PointX = PointA.x, PointY = PointA.y;
+	for (int x = 0; x < abs(Xlength); x++)
+	{
+		PointX += Xlength/abs(Xlength);
+		PointY += Ylength / abs(Xlength);
+		if (abs(PointX-PointA.x)<=abs(Xlength) && abs(PointY-PointA.y)<= abs(Ylength))
+		{
+			DrawCircle(int(PointX), int(PointY), width / 2, c);
+		}
+	}
+	PointX = PointA.x; PointY = PointA.y;
+	for (int y = 0; y < abs(Ylength); y++)
+	{
+		PointY += Ylength/abs(Ylength);
+		PointX += Xlength / abs(Ylength);
+		if (abs(PointX - PointA.x) <= abs(Xlength) && abs(PointY - PointA.y) <= abs(Ylength))
+		{
+			DrawCircle(int(PointX), int(PointY), width / 2, c);
 		}
 	}
 }

@@ -1,12 +1,11 @@
 #include "Sea.h"
 #include "Board.h"
 
-
-
 Sea::Sea()
 	:
 	nBubbles(seaWidth*seaHeight/10000),
-	bubbles(new Bubble[nBubbles])
+	bubbles(new Bubble[nBubbles]),
+	wind(new Wind[nSectors])
 {
 	for (int i = 0; i < nBubbles; i++)
 	{
@@ -16,6 +15,14 @@ Sea::Sea()
 		std::uniform_int_distribution<int> sizeDist(1, 4);
 		bubbles[i].setPosition({ float(xDist(rng)),float(yDist(rng)) });
 		bubbles[i].setSize(sizeDist(rng));
+	}
+	Vec2 eastern = { -10,0 };
+	for (int i = 0, sectorX = 0; sectorX < seaWidth/sectorWidth; sectorX++)
+	{
+		for (int sectorY = 0; sectorY < seaHeight/sectorWidth; sectorY++)
+		{
+			wind[i++] = Wind(float(sectorWidth), Vec2(float(sectorX),float(sectorY)), eastern);
+		}
 	}
 }
 

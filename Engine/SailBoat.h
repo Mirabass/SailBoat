@@ -3,6 +3,7 @@
 #include "Vec2.h"
 #include "SpriteCodex.h"
 #include "Board.h"
+#include "Colors.h"
 
 class SailBoat
 {
@@ -38,6 +39,7 @@ public:
 		float getAngle() const;
 		void Draw(Graphics& gfx) const;
 	private:
+		Color rudderColor = Colors::Green;
 		float speedOfTilting = 100.0f;
 		float rudderAngle;
 	};

@@ -48,14 +48,14 @@ void Board::Compass::setCompassBearing(const float CompassNorth)
 void Board::Compass::Draw(Graphics & gfx, Vec2 topLeftToolsScreen) const
 {
 	Vec2 CompassPos = topLeftToolsScreen + Vec2((Graphics::ScreenWidth - topLeftToolsScreen.x)/2,110);
-	float blackStripeRadiusTop = 92.0f;
-	float blackStripeRadiusBottom = 74.0f;
-	gfx.DrawCircle(CompassPos.x, CompassPos.y, 98, Colors::Gray);
-	gfx.DrawCircle(CompassPos.x, CompassPos.y, blackStripeRadiusTop, Colors::Black);
-	gfx.DrawCircle(CompassPos.x, CompassPos.y, blackStripeRadiusBottom, Colors::Gray);
-	gfx.DrawCircle(CompassPos.x, CompassPos.y, 6, Colors::Cyan);
-	Vec2 pointerPos = { 0,-(blackStripeRadiusTop + blackStripeRadiusBottom) / 2 };
+	int blackStripeRadiusTop = 92;
+	int blackStripeRadiusBottom = 74;
+	gfx.DrawCircle(int(CompassPos.x), int(CompassPos.y), 98, Colors::Gray);
+	gfx.DrawCircle(int(CompassPos.x), int(CompassPos.y), blackStripeRadiusTop, Colors::Black);
+	gfx.DrawCircle(int(CompassPos.x), int(CompassPos.y), blackStripeRadiusBottom, Colors::Gray);
+	gfx.DrawCircle(int(CompassPos.x), int(CompassPos.y), 6, Colors::Cyan);
+	Vec2 pointerPos = { 0,-float(blackStripeRadiusTop + blackStripeRadiusBottom) / 2 };
 	pointerPos.Rotate(compassNorth);
 	pointerPos = CompassPos + pointerPos;
-	gfx.DrawCircle(pointerPos.x, pointerPos.y, (blackStripeRadiusTop - blackStripeRadiusBottom) / 4, Colors::Red);
+	gfx.DrawCircle(int(pointerPos.x), int(pointerPos.y), (blackStripeRadiusTop - blackStripeRadiusBottom) / 4, Colors::Red);
 }

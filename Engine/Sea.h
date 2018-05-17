@@ -4,6 +4,7 @@
 #include "SpriteCodex.h"
 #include <random>
 #include "SailBoat.h"
+#include "Wind.h"
 
 class Sea
 {
@@ -25,12 +26,17 @@ public:
 		Vec2 position;
 		int size;
 	};
-private:
+public:
 	static constexpr int seaWidth = 10000;
 	static constexpr int seaHeight = 10000;
+private:
+	static constexpr int sectorWidth = 100;
+	const int nSectors = seaWidth / sectorWidth * seaHeight / sectorWidth;
 	static constexpr Color seaColor = { 0,0,102 };
 	std::random_device rd;
 	const int nBubbles;
 	Bubble* bubbles = nullptr;
+public:
+	Wind* wind = nullptr;
 };
 
