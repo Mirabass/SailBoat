@@ -27,6 +27,11 @@ Vec2 SailBoat::getLocation() const
 	return hull.getLocation();
 }
 
+Vec2 SailBoat::getMastPosition() const
+{
+	return mastPosition;
+}
+
 float SailBoat::getBearing() const
 {
 	return bearing;
@@ -42,13 +47,15 @@ void SailBoat::Update(const float dt, Board& brd)
 	bearing += speedOfTurning * dt * rudder.getAngle();
 	position.x += speedToWater * dt * sin((bearing)*float(M_PI)/180.0f);
 	position.y += speedToWater * dt * cos((bearing-180)*float(M_PI)/180.0f);
+	windIndicator.setWIangle(45.0f);
 	brd.setCompassBearing(bearing);
 }
 
 void SailBoat::Draw(Graphics& gfx) const
 {
 	hull.Draw(gfx);
-	SpriteCodex::DrawMast(Vec2(playerBoatLocationX + Hull::hullWidth/2 -26, playerBoatLocationY + 80), gfx);
+	SpriteCodex::DrawMast(Vec2(mastPosition.x-26,mastPosition.y-8), gfx);
+	windIndicator.Draw(gfx, Vec2(mastPosition.x-1,mastPosition.y));
 	rudder.Draw(gfx);
 }
 
@@ -103,4 +110,42 @@ void SailBoat::Rudder::Draw(Graphics & gfx) const
 	vecOfRudder.Rotate(-rudderAngle);
 	Vec2 rudderEnd = rudderCentre + vecOfRudder;
 	gfx.DrawAbscissa(rudderCentre, rudderEnd, rudderWidth, rudderColor);
+}
+
+void SailBoat::WindIndicator::setWIangle(const float direction)
+{
+	WIangle = direction;
+}
+
+void SailBoat::WindIndicator::Draw(Graphics & gfx, Vec2 windIndicatorPosition) const
+{
+	int WIwidth = 3;
+	Vec2 center = { 0,0 };
+	Vec2 TipPoint = { 0,-26 };
+	Vec2 leftFrontPoint = { -3,-18 };
+	Vec2 rightFrontPoint = { +3,-18 };
+	Vec2 backPoint = { 0,26 };
+	Vec2 leftBackPoint = { -3,34 };
+	Vec2 rightBackPoint = { +3,34 };
+
+	TipPoint.Rotate(WIangle);
+	leftFrontPoint.Rotate(WIangle);
+	rightFrontPoint.Rotate(WIangle);
+	backPoint.Rotate(WIangle);
+	leftBackPoint.Rotate(WIangle);
+	rightBackPoint.Rotate(WIangle);
+
+	center += windIndicatorPosition;
+	TipPoint += windIndicatorPosition;
+	leftFrontPoint += windIndicatorPosition;
+	rightFrontPoint += windIndicatorPosition;
+	backPoint += windIndicatorPosition;
+	leftBackPoint += windIndicatorPosition;
+	rightBackPoint += windIndicatorPosition;
+
+	gfx.DrawAbscissa(TipPoint, leftFrontPoint, WIwidth, windIndicatorColor);
+	gfx.DrawAbscissa(TipPoint, rightFrontPoint, WIwidth, windIndicatorColor);
+	gfx.DrawAbscissa(TipPoint, backPoint, 2, windIndicatorColor);
+	gfx.DrawAbscissa(backPoint, leftBackPoint, WIwidth, windIndicatorColor);
+	gfx.DrawAbscissa(backPoint, rightBackPoint, WIwidth, windIndicatorColor);
 }

@@ -13,6 +13,7 @@ public:
 	~SailBoat();
 	Vec2 getPosition() const;
 	Vec2 getLocation() const;
+	Vec2 getMastPosition() const;
 	float getBearing() const;
 	void tiltRudder(const int direction, const float dt);
 	void Update(const float dt, Board& brd);
@@ -43,6 +44,15 @@ public:
 		float speedOfTilting = 100.0f;
 		float rudderAngle;
 	};
+	class WindIndicator
+	{
+	public:
+		void setWIangle(const float direction);
+		void Draw(Graphics& gfx, Vec2 MastPosition) const;
+	private:
+		Color windIndicatorColor = Colors::Red;
+		float WIangle;
+	};
 public:
 	static constexpr int playerBoatLocationX = int(Board::playScreenWidth/2) - int(Hull::hullWidth/2);
 	static constexpr int playerBoatLocationY = 259 + int(Hull::hullHeight/2);
@@ -51,8 +61,10 @@ private:
 	Hull hull;
 	Rudder rudder;
 	Vec2 position;
+	WindIndicator windIndicator;
 	float speedToWater = 100.0f;
 	float speedOfTurning = speedToWater * 0.01f;
 	float bearing = 0.0f;
+	Vec2 mastPosition = { playerBoatLocationX + Hull::hullWidth / 2, playerBoatLocationY + 94 };
 };
 
