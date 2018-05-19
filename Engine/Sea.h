@@ -12,6 +12,7 @@ public:
 	Sea();
 	~Sea();
 
+	Wind getLocalWind(const Vec2 Position) const;
 	void Draw(SailBoat& playerBoat, Board& brd,Graphics& gfx) const;
 
 public:
@@ -36,7 +37,6 @@ private:
 	std::random_device rd;
 	const int nBubbles;
 	Bubble* bubbles = nullptr;
-public:
 	Wind* wind = nullptr;
 };
 

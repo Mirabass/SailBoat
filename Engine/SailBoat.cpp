@@ -42,12 +42,14 @@ void SailBoat::tiltRudder(const int direction, const float dt)
 	rudder.changeAngle(float(direction), dt);
 }
 
-void SailBoat::Update(const float dt, Board& brd)
+
+void SailBoat::Update(const float dt, Board& brd, Wind& wind)
 {
 	bearing += speedOfTurning * dt * rudder.getAngle();
 	position.x += speedToWater * dt * sin((bearing)*float(M_PI)/180.0f);
 	position.y += speedToWater * dt * cos((bearing-180)*float(M_PI)/180.0f);
-	windIndicator.setWIangle(45.0f);
+	float WindBearing = wind.getBearing();
+	windIndicator.setWIangle(bearing - WindBearing);
 	brd.setCompassBearing(bearing);
 }
 

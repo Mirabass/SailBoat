@@ -54,7 +54,8 @@ void Game::UpdateModel(float dt)
 	{
 		playerBoat.tiltRudder(+1, dt);
 	}
-	playerBoat.Update(dt, brd);
+	Wind localWind = sea.getLocalWind(playerBoat.getPosition());
+	playerBoat.Update(dt, brd, localWind);
 }
 
 void Game::ComposeFrame()

@@ -1,5 +1,6 @@
 #include "Sea.h"
 #include "Board.h"
+#include <assert.h>
 
 Sea::Sea()
 	:
@@ -17,7 +18,8 @@ Sea::Sea()
 		bubbles[i].setSize(sizeDist(rng));
 	}
 	Vec2 eastern = { -10,0 };
-	for (int i = 0, sectorX = 0; sectorX < seaWidth/sectorWidth; sectorX++)
+	int i = 0;
+	for (int sectorX = 0; sectorX < seaWidth / sectorWidth; sectorX++)
 	{
 		for (int sectorY = 0; sectorY < seaHeight/sectorWidth; sectorY++)
 		{
@@ -29,6 +31,21 @@ Sea::Sea()
 
 Sea::~Sea()
 {
+}
+
+Wind Sea::getLocalWind(const Vec2 Position) const
+{
+	int local = 0;
+	do
+	{
+		if (wind[local].IsInSector(Position))
+		{
+			return wind[local];
+		}
+		local++;
+	} while (local < nSectors);
+	assert(false);
+	return wind[0];
 }
 
 void Sea::Draw(SailBoat& playerBoat, Board& brd, Graphics & gfx) const

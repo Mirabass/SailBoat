@@ -4,6 +4,7 @@
 #include "SpriteCodex.h"
 #include "Board.h"
 #include "Colors.h"
+#include "Wind.h"
 
 class SailBoat
 {
@@ -16,7 +17,7 @@ public:
 	Vec2 getMastPosition() const;
 	float getBearing() const;
 	void tiltRudder(const int direction, const float dt);
-	void Update(const float dt, Board& brd);
+	void Update(const float dt, Board& brd, Wind& wind);
 	void Draw(Graphics& gfx) const;
 
 	class Hull

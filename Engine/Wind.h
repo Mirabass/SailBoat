@@ -6,10 +6,13 @@ class Wind
 {
 public:
 	Wind() = default;
-	Wind(float sectorWidth, Vec2 sectorPosition, Vec2 windSpeedVector);
+	Wind(float sectorWidth, Vec2& sectorPosition, Vec2& windSpeedVector);
 	~Wind();
 public:
-
+	void setSector(Vec2& sectorPos, float secWidth);
+	void setSpeedVector(Vec2& speedVector);
+	bool IsInSector(const Vec2 Position);
+	float getBearing() const;
 private:
 	float sectorWidth;
 	Vec2 sectorPosition;
