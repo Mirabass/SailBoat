@@ -17,6 +17,7 @@ public:
 	Vec2 getMastPosition() const;
 	float getBearing() const;
 	void tiltRudder(const int direction, const float dt);
+	void ControlMainSheet(const int direction, const float dt);
 	void Update(const float dt, Board& brd, Wind& wind);
 	void Draw(Graphics& gfx) const;
 
@@ -57,16 +58,22 @@ public:
 	class Sails
 	{
 	public:
+		Sails(float mainSailAngle);
 		void Draw(Graphics& gfx) const;
+		void controlMainSheat(const float direction, const float dt);
 	public:
 		class MainSail
 		{
 		public:
+			MainSail(float mainSailAngle);
 			void Draw(Graphics& gfx) const;
+			void controlMainSheat(const float direction, const float dt);
 		private:
 			Color mainSailColor = Colors::Black;
 			const float mainSailLength = 110;
 			const float mainSailThickness = 2;
+			float speedOfControlling = 60.0f;
+			float mainSailAngle;
 		};
 		class Jib
 		{
@@ -82,7 +89,7 @@ public:
 	static constexpr int playerBoatLocationX = int(Board::playScreenWidth/2) - int(Hull::hullWidth/2) + int(Board::borderWidth);
 	static constexpr int playerBoatLocationY = 259 + int(Hull::hullHeight/2);
 	static constexpr int mastPositionX = playerBoatLocationX + Hull::hullWidth / 2;
-	static constexpr int mastPositionY = playerBoatLocationY + 94;
+	static constexpr int mastPositionY = playerBoatLocationY + int(Hull::hullHeight / 2.6);
 
 private:
 	Hull hull;

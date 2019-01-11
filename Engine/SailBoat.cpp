@@ -7,7 +7,8 @@ SailBoat::SailBoat(const Vec2 & pos)
 	:
 	hull(Vec2(float(playerBoatLocationX), float(playerBoatLocationY)), 0.0f),
 	rudder(0.0f),
-	position(pos)
+	position(pos),
+	sails(1.0f)
 {
 }
 
@@ -38,6 +39,12 @@ float SailBoat::getBearing() const
 void SailBoat::tiltRudder(const int direction, const float dt)
 {
 	rudder.changeAngle(float(direction), dt);
+}
+
+void SailBoat::ControlMainSheet(const int direction, const float dt)
+{
+
+
 }
 
 
@@ -151,16 +158,37 @@ void SailBoat::WindIndicator::Draw(Graphics & gfx, Vec2 windIndicatorPosition) c
 	gfx.DrawAbscissa(backPoint, rightBackPoint, WIwidth, windIndicatorColor);
 }
 
+SailBoat::Sails::Sails(float mainSailAngle)
+	:
+	mainSail(mainSailAngle)
+{
+}
+
 void SailBoat::Sails::Draw(Graphics & gfx) const
 {
 	mainSail.Draw(gfx);
 }
 
+void SailBoat::Sails::controlMainSheat(const float direction, const float dt)
+{
+}
+
+SailBoat::Sails::MainSail::MainSail(float mainSailAngle)
+	:
+	mainSailAngle(mainSailAngle)
+{
+}
+
 void SailBoat::Sails::MainSail::Draw(Graphics & gfx) const
 {
-	float angle = 30;
-	float sailRadius = 80;
+	float angle = 0;
+	float sailRadius = 1000;
 	// prepocet podle bearing uhlu:
 	float b_angle = 180 - angle;
 	gfx.DrawCircleCurve(Vec2(mastPositionX,mastPositionY), mainSailLength, sailRadius, b_angle, mainSailThickness, mainSailColor);
+}
+
+void SailBoat::Sails::MainSail::controlMainSheat(const float direction, const float dt)
+{
+
 }

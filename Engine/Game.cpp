@@ -54,6 +54,10 @@ void Game::UpdateModel(float dt)
 	{
 		playerBoat.tiltRudder(+1, dt);
 	}
+	if (wnd.kbd.KeyIsPressed(0x41)) // Key A
+	{
+		playerBoat.ControlMainSheet(-1, dt);
+	}
 	Wind localWind = sea.getLocalWind(playerBoat.getPosition());
 	playerBoat.Update(dt, brd, localWind);
 }

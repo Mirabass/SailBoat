@@ -44,7 +44,7 @@ Wind Sea::getLocalWind(const Vec2 Position) const
 		}
 		local++;
 	} while (local < nSectors);
-	assert(false);
+	assert(false,"Vyjel jsi z hraciho pole.");
 	return wind[0];
 }
 
