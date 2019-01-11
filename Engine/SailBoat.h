@@ -54,9 +54,35 @@ public:
 		Color windIndicatorColor = Colors::Red;
 		float WIangle;
 	};
+	class Sails
+	{
+	public:
+		void Draw(Graphics& gfx) const;
+	public:
+		class MainSail
+		{
+		public:
+			void Draw(Graphics& gfx) const;
+		private:
+			Color mainSailColor = Colors::LightGray;
+			const float mainSailLength = 200;
+			const float mainSailThickness = 8;
+		};
+		class Jib
+		{
+		public:
+		private:
+			Color jibColor = Colors::LightGray;
+		};
+	private:
+		MainSail mainSail;
+		Jib jib;
+	};
 public:
-	static constexpr int playerBoatLocationX = int(Board::playScreenWidth/2) - int(Hull::hullWidth/2);
+	static constexpr int playerBoatLocationX = int(Board::playScreenWidth/2) - int(Hull::hullWidth/2) + int(Board::borderWidth);
 	static constexpr int playerBoatLocationY = 259 + int(Hull::hullHeight/2);
+	static constexpr int mastPositionX = playerBoatLocationX + Hull::hullWidth / 2;
+	static constexpr int mastPositionY = playerBoatLocationY + 94;
 
 private:
 	Hull hull;
@@ -66,6 +92,7 @@ private:
 	float speedToWater = 100.0f;
 	float speedOfTurning = speedToWater * 0.01f;
 	float bearing = 0.0f;
-	Vec2 mastPosition = { playerBoatLocationX + Hull::hullWidth / 2, playerBoatLocationY + 94 };
+	Vec2 mastPosition = { mastPositionX, mastPositionY };
+	Sails sails;
 };
 

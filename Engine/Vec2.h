@@ -13,6 +13,7 @@ public:
 	Vec2& operator-=( const Vec2& rhs );
 	float GetLength() const;
 	float GetLengthSq() const;
+	float GetAngle() const;
 	Vec2& Normalize();
 	Vec2 GetNormalized() const;
 	Vec2& Rotate(const float angle);

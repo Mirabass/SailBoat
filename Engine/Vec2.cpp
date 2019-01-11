@@ -50,6 +50,32 @@ float Vec2::GetLengthSq() const
 	return x * x + y * y;
 }
 
+float Vec2::GetAngle() const
+{
+	float result;
+	float x_abs, y_abs;
+	x_abs = abs(x);
+	y_abs = abs(y);
+	if (x>=0 && y>=0)
+	{
+		result = 90.0f + atan(y_abs / x_abs);
+	}
+	else if (x<0&&y>=0)
+	{
+		result = 270.0f - atan(y_abs / x_abs);
+	}
+	else if (x<0&&y<0)
+	{
+		result = 270.0f + atan(y_abs / x_abs);
+	}
+	else
+	{
+		result = 90.0f - atan(y_abs / x_abs);
+	}
+
+	return result;
+}
+
 Vec2& Vec2::Normalize()
 {
 	return *this = GetNormalized();

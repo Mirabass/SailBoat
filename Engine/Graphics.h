@@ -63,6 +63,8 @@ public:
 		DrawRect(int(rect.left), int(rect.top), int(rect.right), int(rect.bottom), c);
 	}
 	void DrawCircle(int x, int y, int radius, Color c);
+	void DrawCircleCurve(const Vec2& PointA, const float length, const float radius, const float angle, const int width, Color c);
+	void DrawCircleCurve(const float radius, const Vec2& center, const float angleOfFisrtPoint, const float angleOfSecondPoint, const int width, Color c);
 	void DrawAbscissa(const Vec2& PointA, const Vec2& PointB, const int width, Color c);
 	void DrawIsoRightTriUL(int x, int y, int size, Color c);
 	void DrawIsoRightTriUR(int x, int y, int size, Color c);

@@ -25,6 +25,7 @@
 #include <assert.h>
 #include <string>
 #include <array>
+#define _USE_MATH_DEFINES
 #include <math.h>
 
 // Ignore the intellisense error "cannot open source file" for .shh files.
@@ -354,6 +355,55 @@ void Graphics::DrawCircle(int x, int y, int radius, Color c)
 			if (x_diff * x_diff + y_diff * y_diff <= rad_sq)
 			{
 				PutPixel(x_loop, y_loop, c);
+			}
+		}
+	}
+}
+
+void Graphics::DrawCircleCurve(const Vec2 & PointA, const float length, const float radius, const float angle, const int width, Color c)
+{
+	Vec2 center, add;
+	float dAngle, angle1, angle2, gama;
+	dAngle = length / radius * 180.0f / float(M_PI);
+	if (angle >= 180)
+	{
+		gama = 270 - dAngle / 2 - angle;
+		add = { radius*sin(gama / 180.0f*float(M_PI)),radius*cos(gama / 180.0f*float(M_PI)) };
+		angle2 = 360 - gama;
+		angle1 = angle2 - dAngle;
+	}
+	else
+	{
+		gama = -90 - dAngle / 2 + angle;
+		add = { -radius*sin(gama / 180.0f*float(M_PI)),radius*cos(gama / 180.0f*float(M_PI)) };
+		angle1 = gama;
+		angle2 = gama + dAngle;
+	}
+	center = PointA + add;
+	DrawCircleCurve(radius, center, angle1, angle2, width, c);
+}
+
+void Graphics::DrawCircleCurve(const float radius, const Vec2 & center, const float angleOfFirstPoint, const float angleOfSecondPoint, const int width, Color c)
+{
+	const int rad_sq = radius * radius;
+	Vec2 drawedPoint;
+	float actualAngle;
+	int center_x = int(center.x);
+	int center_y = int(center.y);
+	for (int x = center_x - radius +1; x < center_x + radius; x++)
+	{
+		for (int y = center_y - radius +1; y < center_y + radius; y++)
+		{
+			const int x_diff = center_x - x;
+			const int y_diff = center_y - y;
+			if (x_diff * x_diff + y_diff * y_diff <= rad_sq)
+			{
+				drawedPoint = Vec2(float(-x_diff), float(-y_diff));
+				actualAngle = drawedPoint.GetAngle();
+				if (actualAngle > angleOfFirstPoint && actualAngle < angleOfSecondPoint)
+				{
+					DrawCircle(x,y,width,c);
+				}
 			}
 		}
 	}

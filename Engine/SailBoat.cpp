@@ -9,9 +9,7 @@ SailBoat::SailBoat(const Vec2 & pos)
 	rudder(0.0f),
 	position(pos)
 {
-
 }
-
 
 SailBoat::~SailBoat()
 {
@@ -57,8 +55,9 @@ void SailBoat::Draw(Graphics& gfx) const
 {
 	hull.Draw(gfx);
 	SpriteCodex::DrawMast(Vec2(mastPosition.x-26,mastPosition.y-8), gfx);
-	windIndicator.Draw(gfx, Vec2(mastPosition.x-1,mastPosition.y));
 	rudder.Draw(gfx);
+	sails.Draw(gfx);
+	windIndicator.Draw(gfx, Vec2(mastPosition.x - 1, mastPosition.y));
 }
 
 SailBoat::Hull::Hull(Vec2 loc, float rot)
@@ -150,4 +149,18 @@ void SailBoat::WindIndicator::Draw(Graphics & gfx, Vec2 windIndicatorPosition) c
 	gfx.DrawAbscissa(TipPoint, backPoint, 2, windIndicatorColor);
 	gfx.DrawAbscissa(backPoint, leftBackPoint, WIwidth, windIndicatorColor);
 	gfx.DrawAbscissa(backPoint, rightBackPoint, WIwidth, windIndicatorColor);
+}
+
+void SailBoat::Sails::Draw(Graphics & gfx) const
+{
+	mainSail.Draw(gfx);
+}
+
+void SailBoat::Sails::MainSail::Draw(Graphics & gfx) const
+{
+	float angle = 30;
+	float sailRadius = 300;
+	// prepocet podle bearing uhlu:
+	float b_angle = 180 - angle;
+	gfx.DrawCircleCurve(Vec2(mastPositionX,mastPositionY), mainSailLength, sailRadius, b_angle, mainSailThickness, mainSailColor);
 }
