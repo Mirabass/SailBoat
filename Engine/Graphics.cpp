@@ -385,7 +385,8 @@ void Graphics::DrawCircleCurve(const Vec2 & PointA, const float length, const fl
 
 void Graphics::DrawCircleCurve(const float radius, const Vec2 & center, const float angleOfFirstPoint, const float angleOfSecondPoint, const int width, Color c)
 {
-	const int rad_sq = radius * radius;
+	const int rad_sq_max = radius * radius;
+	const int rad_sq_min = (radius - 1) * (radius - 1);
 	Vec2 drawedPoint;
 	float actualAngle;
 	int center_x = int(center.x);
@@ -396,7 +397,8 @@ void Graphics::DrawCircleCurve(const float radius, const Vec2 & center, const fl
 		{
 			const int x_diff = center_x - x;
 			const int y_diff = center_y - y;
-			if (x_diff * x_diff + y_diff * y_diff <= rad_sq)
+			const int sq_diff = x_diff * x_diff + y_diff * y_diff;
+			if (sq_diff <= rad_sq_max && sq_diff >= rad_sq_min)
 			{
 				drawedPoint = Vec2(float(-x_diff), float(-y_diff));
 				actualAngle = drawedPoint.GetAngle();

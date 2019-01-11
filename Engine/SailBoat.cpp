@@ -159,7 +159,7 @@ void SailBoat::Sails::Draw(Graphics & gfx) const
 void SailBoat::Sails::MainSail::Draw(Graphics & gfx) const
 {
 	float angle = 30;
-	float sailRadius = 300;
+	float sailRadius = 80;
 	// prepocet podle bearing uhlu:
 	float b_angle = 180 - angle;
 	gfx.DrawCircleCurve(Vec2(mastPositionX,mastPositionY), mainSailLength, sailRadius, b_angle, mainSailThickness, mainSailColor);

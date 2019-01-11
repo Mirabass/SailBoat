@@ -64,9 +64,9 @@ public:
 		public:
 			void Draw(Graphics& gfx) const;
 		private:
-			Color mainSailColor = Colors::LightGray;
-			const float mainSailLength = 200;
-			const float mainSailThickness = 8;
+			Color mainSailColor = Colors::Black;
+			const float mainSailLength = 110;
+			const float mainSailThickness = 2;
 		};
 		class Jib
 		{

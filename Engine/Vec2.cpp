@@ -58,19 +58,19 @@ float Vec2::GetAngle() const
 	y_abs = abs(y);
 	if (x>=0 && y>=0)
 	{
-		result = 90.0f + atan(y_abs / x_abs);
+		result = 90.0f + atan(y_abs / x_abs)*180.0f / float(M_PI);
 	}
 	else if (x<0&&y>=0)
 	{
-		result = 270.0f - atan(y_abs / x_abs);
+		result = 270.0f - atan(y_abs / x_abs)*180.0f / float(M_PI);
 	}
 	else if (x<0&&y<0)
 	{
-		result = 270.0f + atan(y_abs / x_abs);
+		result = 270.0f + atan(y_abs / x_abs)*180.0f / float(M_PI);
 	}
 	else
 	{
-		result = 90.0f - atan(y_abs / x_abs);
+		result = 90.0f - atan(y_abs / x_abs)*180.0f / float(M_PI);
 	}
 
 	return result;
