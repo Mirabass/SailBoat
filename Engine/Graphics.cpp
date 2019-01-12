@@ -380,6 +380,14 @@ void Graphics::DrawCircleCurve(const Vec2 & PointA, const float length, const fl
 		angle2 = gama + dAngle;
 	}
 	center = PointA + add;
+	if (angle1 < 0)
+	{
+		angle1 += 360;
+	}
+	if (angle2 < 0)
+	{
+		angle2 += 360;
+	}
 	DrawCircleCurve(radius, center, angle1, angle2, width, c);
 }
 
@@ -402,9 +410,19 @@ void Graphics::DrawCircleCurve(const float radius, const Vec2 & center, const fl
 			{
 				drawedPoint = Vec2(float(-x_diff), float(-y_diff));
 				actualAngle = drawedPoint.GetAngle();
-				if (actualAngle > angleOfFirstPoint && actualAngle < angleOfSecondPoint)
+				if (angleOfFirstPoint - angleOfSecondPoint < -180 || angleOfFirstPoint - angleOfSecondPoint > 180)
 				{
-					DrawCircle(x,y,width,c);
+					if (actualAngle < angleOfFirstPoint || actualAngle > angleOfSecondPoint)
+					{
+						DrawCircle(x, y, width, c);
+					}
+				}
+				else
+				{
+					if (actualAngle > angleOfFirstPoint && actualAngle < angleOfSecondPoint)
+					{
+						DrawCircle(x, y, width, c);
+					}
 				}
 			}
 		}

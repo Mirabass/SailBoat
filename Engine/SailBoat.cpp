@@ -43,8 +43,7 @@ void SailBoat::tiltRudder(const int direction, const float dt)
 
 void SailBoat::ControlMainSheet(const int direction, const float dt)
 {
-
-
+	sails.controlMainSheat(direction, dt);
 }
 
 
@@ -136,12 +135,12 @@ void SailBoat::WindIndicator::Draw(Graphics & gfx, Vec2 windIndicatorPosition) c
 	Vec2 leftBackPoint = { -3,34 };
 	Vec2 rightBackPoint = { +3,34 };
 
-	TipPoint.Rotate(WIangle);
-	leftFrontPoint.Rotate(WIangle);
-	rightFrontPoint.Rotate(WIangle);
-	backPoint.Rotate(WIangle);
-	leftBackPoint.Rotate(WIangle);
-	rightBackPoint.Rotate(WIangle);
+	TipPoint.Rotate(180 - WIangle);
+	leftFrontPoint.Rotate(180 - WIangle);
+	rightFrontPoint.Rotate(180 - WIangle);
+	backPoint.Rotate(180 - WIangle);
+	leftBackPoint.Rotate(180 - WIangle);
+	rightBackPoint.Rotate(180 - WIangle);
 
 	center += windIndicatorPosition;
 	TipPoint += windIndicatorPosition;
@@ -171,6 +170,7 @@ void SailBoat::Sails::Draw(Graphics & gfx) const
 
 void SailBoat::Sails::controlMainSheat(const float direction, const float dt)
 {
+	mainSail.controlMainSheat(direction, dt);
 }
 
 SailBoat::Sails::MainSail::MainSail(float mainSailAngle)
@@ -181,14 +181,34 @@ SailBoat::Sails::MainSail::MainSail(float mainSailAngle)
 
 void SailBoat::Sails::MainSail::Draw(Graphics & gfx) const
 {
-	float angle = 0;
-	float sailRadius = 1000;
+	float sailRadius = 200;
 	// prepocet podle bearing uhlu:
-	float b_angle = 180 - angle;
-	gfx.DrawCircleCurve(Vec2(mastPositionX,mastPositionY), mainSailLength, sailRadius, b_angle, mainSailThickness, mainSailColor);
+	float b_angle = 180 - mainSailAngle;
+
+	// boom:
+	Vec2 boomCenter = Vec2(mastPositionX, mastPositionY);
+	Vec2 vecOfBoom = { 0,boomLength };
+	vecOfBoom.Rotate(b_angle);
+	Vec2 boomEnd = boomCenter - vecOfBoom;
+	gfx.DrawAbscissa(boomCenter, boomEnd, boomThickness, boomColor);
+
+	// mainSheet:
+	Vec2 sheetCenter = Vec2(mastPositionX, playerBoatLocationY + Hull::hullHeight);
+	gfx.DrawAbscissa(sheetCenter, boomEnd, mainSheetThickness, mainSheetColor);
+
+	//gfx.DrawCircleCurve(Vec2(mastPositionX,mastPositionY), mainSailLength, sailRadius, b_angle, mainSailThickness, mainSailColor);
 }
 
 void SailBoat::Sails::MainSail::controlMainSheat(const float direction, const float dt)
 {
+	mainSailAngle += direction * speedOfControlling * dt;
 
+	if (mainSailAngle < -90)
+	{
+		mainSailAngle = -90;
+	}
+	else if (mainSailAngle > 90)
+	{
+		mainSailAngle = 90;
+	}
 }

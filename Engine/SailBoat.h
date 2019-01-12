@@ -70,9 +70,13 @@ public:
 			void controlMainSheat(const float direction, const float dt);
 		private:
 			Color mainSailColor = Colors::Black;
-			const float mainSailLength = 110;
-			const float mainSailThickness = 2;
-			float speedOfControlling = 60.0f;
+			const float mainSailThickness = 2.0f;
+			Color boomColor = Colors::Black;
+			const float boomThickness = 6.0f;
+			const float boomLength = 100.0f;
+			Color mainSheetColor = Colors::Magenta;
+			const float mainSheetThickness = 3.0f;
+			float speedOfControlling = 40.0f;
 			float mainSailAngle;
 		};
 		class Jib
