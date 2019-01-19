@@ -28,6 +28,11 @@ void Wind::setSpeedVector(Vec2& speedVector)
 	windSpeedVector = speedVector;
 }
 
+Vec2 Wind::getSpeedVector() const
+{
+	return windSpeedVector;
+}
+
 bool Wind::IsInSector(const Vec2 Position)
 {
 	return Position.x >= sector.left && Position.y >= sector.top && Position.x <= sector.right && Position.y <= sector.bottom;

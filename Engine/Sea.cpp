@@ -17,7 +17,7 @@ Sea::Sea()
 		bubbles[i].setPosition({ float(xDist(rng)),float(yDist(rng)) });
 		bubbles[i].setSize(sizeDist(rng));
 	}
-	Vec2 eastern = { -10,0 };
+	Vec2 eastern = { -100,0 };
 	int i = 0;
 	for (int sectorX = 0; sectorX < seaWidth / sectorWidth; sectorX++)
 	{

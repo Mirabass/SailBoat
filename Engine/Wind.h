@@ -11,6 +11,7 @@ public:
 public:
 	void setSector(Vec2& sectorPos, float secWidth);
 	void setSpeedVector(Vec2& speedVector);
+	Vec2 getSpeedVector() const;
 	bool IsInSector(const Vec2 Position);
 	float getBearing() const;
 private:
