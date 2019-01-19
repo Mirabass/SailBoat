@@ -17,7 +17,8 @@ public:
 	Vec2 getMastPosition() const;
 	float getBearing() const;
 	void tiltRudder(const int direction, const float dt);
-	void ControlMainSheet(const int direction, const float dt);
+	void ReleaseMainSheet(Wind locWind, const float dt);
+	void TightMainSheet(Wind locWind, const float dt);
 	void Update(const float dt, Board& brd, Wind& wind);
 	void Draw(Graphics& gfx) const;
 
@@ -60,14 +61,17 @@ public:
 	public:
 		Sails(float mainSailAngle);
 		void Draw(Graphics& gfx) const;
-		void controlMainSheat(const float direction, const float dt);
+		void setWindToBoat(Vec2 boatVelocity, Wind locWind);
+		void ReleaseMainSheat(const float dt);
+		void TightMainSheat(const float dt);
 	public:
 		class MainSail
 		{
 		public:
 			MainSail(float mainSailAngle);
 			void Draw(Graphics& gfx) const;
-			void controlMainSheat(const float direction, const float dt);
+			void TurnBoom(const float direction, const float dt);
+			float getMainSailAngle() const;
 		private:
 			Color mainSailColor = Colors::Black;
 			const float mainSailThickness = 2.0f;
@@ -77,7 +81,7 @@ public:
 			Color mainSheetColor = Colors::Magenta;
 			const float mainSheetThickness = 3.0f;
 			float speedOfControlling = 40.0f;
-			float mainSailAngle;
+			float mainSailAngle = 180.0f;
 		};
 		class Jib
 		{
@@ -86,6 +90,7 @@ public:
 			Color jibColor = Colors::LightGray;
 		};
 	private:
+		float windToBoatAngle = 0.0f;
 		MainSail mainSail;
 		Jib jib;
 	};
@@ -100,10 +105,9 @@ private:
 	Rudder rudder;
 	Vec2 position;
 	WindIndicator windIndicator;
-	float speedToWater = 100.0f;
-	float speedOfTurning = speedToWater * 0.01f;
-	float bearing = 0.0f;
 	Vec2 mastPosition = { mastPositionX, mastPositionY };
 	Sails sails;
+	Vec2 boatVelocityToWater = { 0.0f, -100.0f };
+	float speedOfTurning = boatVelocityToWater.GetLength() * 0.01f;
 };
 

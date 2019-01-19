@@ -35,5 +35,5 @@ bool Wind::IsInSector(const Vec2 Position)
 
 float Wind::getBearing() const
 {
-	return float(atan(windSpeedVector.x/windSpeedVector.y)*180.0f/M_PI);
+	return windSpeedVector.GetAngle();
 }

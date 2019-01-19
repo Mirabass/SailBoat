@@ -33,7 +33,7 @@ Vec2 SailBoat::getMastPosition() const
 
 float SailBoat::getBearing() const
 {
-	return bearing;
+	return boatVelocityToWater.GetAngle();
 }
 
 void SailBoat::tiltRudder(const int direction, const float dt)
@@ -41,15 +41,24 @@ void SailBoat::tiltRudder(const int direction, const float dt)
 	rudder.changeAngle(float(direction), dt);
 }
 
-void SailBoat::ControlMainSheet(const int direction, const float dt)
+void SailBoat::ReleaseMainSheet(Wind locWind, const float dt)
 {
-	sails.controlMainSheat(direction, dt);
+	sails.setWindToBoat(boatVelocityToWater, locWind);
+	sails.ReleaseMainSheat(dt);
 }
 
 
+void SailBoat::TightMainSheet(Wind locWind, const float dt)
+{
+	sails.setWindToBoat(boatVelocityToWater, locWind);
+	sails.TightMainSheat(dt);
+}
+
 void SailBoat::Update(const float dt, Board& brd, Wind& wind)
 {
-	bearing += speedOfTurning * dt * rudder.getAngle();
+	boatVelocityToWater.Rotate(speedOfTurning * dt * rudder.getAngle());
+	float bearing = boatVelocityToWater.GetAngle();
+	float speedToWater = boatVelocityToWater.GetLength();
 	position.x += speedToWater * dt * sin((bearing)*float(M_PI)/180.0f);
 	position.y += speedToWater * dt * cos((bearing-180)*float(M_PI)/180.0f);
 	float WindBearing = wind.getBearing();
@@ -168,9 +177,49 @@ void SailBoat::Sails::Draw(Graphics & gfx) const
 	mainSail.Draw(gfx);
 }
 
-void SailBoat::Sails::controlMainSheat(const float direction, const float dt)
+void SailBoat::Sails::setWindToBoat(Vec2 boatVelocity, Wind locWind)
 {
-	mainSail.controlMainSheat(direction, dt);
+	windToBoatAngle = locWind.getBearing() - boatVelocity.GetAngle();
+	if (windToBoatAngle < 0)
+	{
+		windToBoatAngle = 360 - windToBoatAngle;
+	}
+}
+
+void SailBoat::Sails::TightMainSheat(const float dt)
+{
+	if (windToBoatAngle < 180)
+	{
+		if (mainSail.getMainSailAngle() > 5)
+		{
+			mainSail.TurnBoom(-1, dt);
+		}
+	}
+	else
+	{
+		if (mainSail.getMainSailAngle() < -5)
+		{
+			mainSail.TurnBoom(+1, dt);
+		}
+	}
+}
+
+void SailBoat::Sails::ReleaseMainSheat(const float dt)
+{
+	if (windToBoatAngle < 180)
+	{
+		if (mainSail.getMainSailAngle() < 85)
+		{
+			mainSail.TurnBoom(+1, dt);
+		}
+	}
+	else
+	{
+		if (mainSail.getMainSailAngle() > -85)
+		{
+			mainSail.TurnBoom(-1, dt);
+		}
+	}
 }
 
 SailBoat::Sails::MainSail::MainSail(float mainSailAngle)
@@ -199,16 +248,12 @@ void SailBoat::Sails::MainSail::Draw(Graphics & gfx) const
 	//gfx.DrawCircleCurve(Vec2(mastPositionX,mastPositionY), mainSailLength, sailRadius, b_angle, mainSailThickness, mainSailColor);
 }
 
-void SailBoat::Sails::MainSail::controlMainSheat(const float direction, const float dt)
+void SailBoat::Sails::MainSail::TurnBoom(const float direction, const float dt)
 {
 	mainSailAngle += direction * speedOfControlling * dt;
+}
 
-	if (mainSailAngle < -90)
-	{
-		mainSailAngle = -90;
-	}
-	else if (mainSailAngle > 90)
-	{
-		mainSailAngle = 90;
-	}
+float SailBoat::Sails::MainSail::getMainSailAngle() const
+{
+	return mainSailAngle;
 }
