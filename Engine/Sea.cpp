@@ -2,7 +2,7 @@
 #include "Board.h"
 #include <assert.h>
 
-Sea::Sea()
+Sea::Sea(const int& seaWidth, const int& seaHeight)
 	:
 	nBubbles(seaWidth*seaHeight/10000),
 	bubbles(new Bubble[nBubbles]),

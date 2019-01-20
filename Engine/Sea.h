@@ -9,7 +9,7 @@
 class Sea
 {
 public:
-	Sea();
+	Sea(const int& seaWidth, const int& seaHeight);
 	~Sea();
 
 	Wind getLocalWind(const Vec2 Position) const;
@@ -28,8 +28,8 @@ public:
 		int size;
 	};
 public:
-	static constexpr int seaWidth = 10000;
-	static constexpr int seaHeight = 10000;
+	int seaWidth;
+	int seaHeight;
 private:
 	static constexpr int sectorWidth = 100;
 	const int nSectors = seaWidth / sectorWidth * seaHeight / sectorWidth;
