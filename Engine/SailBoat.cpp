@@ -53,11 +53,24 @@ void SailBoat::TightMainSheet(Wind locWind, const float dt)
 	sails.TightMainSheat(apparentWind, windToBoatAngle,dt);
 }
 
+void SailBoat::setSpeed(Wind trueWind, const float dt)
+{
+	maxCurrentBoatSpeed = maxBoatSpeedCoeff * trueWind.getSpeedVector().GetLength();
+	//float angleMainSailToTrueWind = 30.0f;
+	//float changeValue = maxCurrentBoatSpeed * angleMainSailToTrueWind * 0.2f;
+	//boatVelocityToWater.AddLength(changeValue);
+}
+
 void SailBoat::Update(const float dt, Board& brd, Wind& wind)
 {
+	speedOfTurning = boatVelocityToWater.GetLength() * speedOfTurningCoeff;
 	boatVelocityToWater.Rotate(speedOfTurning * dt * rudder.getAngle());
 	setWindToBoat(wind);
 	sails.TackOrJibe(apparentWind,windToBoatAngle ,dt);
+	if (!sails.tacking && !sails.jibbing)
+	{
+		setSpeed(wind, dt);
+	}
 	float bearing = boatVelocityToWater.GetAngle();
 	float speedToWater = boatVelocityToWater.GetLength();
 	position.x += speedToWater * dt * sin((bearing)*float(M_PI)/180.0f);
@@ -120,13 +133,11 @@ float SailBoat::Rudder::getAngle() const
 
 void SailBoat::Rudder::Draw(Graphics & gfx) const
 {
-	int rudderWidth = 4;
-	float rudderLength = 20.0f;
 	Vec2 rudderCentre = { float(playerBoatLocationX) + float(Hull::hullWidth) / 2,float(playerBoatLocationY + Hull::hullHeight) };
 	Vec2 vecOfRudder = { 0,rudderLength };
 	vecOfRudder.Rotate(-rudderAngle);
 	Vec2 rudderEnd = rudderCentre + vecOfRudder;
-	gfx.DrawAbscissa(rudderCentre, rudderEnd, rudderWidth, rudderColor);
+	gfx.DrawAbscissa(rudderCentre, rudderEnd, rudderThickness, rudderColor);
 }
 
 void SailBoat::WindIndicator::setWIangle(const float direction)
@@ -136,7 +147,6 @@ void SailBoat::WindIndicator::setWIangle(const float direction)
 
 void SailBoat::WindIndicator::Draw(Graphics & gfx, Vec2 windIndicatorPosition) const
 {
-	int WIwidth = 3;
 	Vec2 center = { 0,0 };
 	Vec2 TipPoint = { 0,-26 };
 	Vec2 leftFrontPoint = { -3,-18 };
@@ -196,14 +206,14 @@ void SailBoat::Sails::TightMainSheat(Vec2 appWind, const float windTBA, const fl
 	{
 		if (windTBA < 180)
 		{
-			if (mainSail.getMainSailAngle() > 5)
+			if (mainSail.getMainSailAngle() > minMainSailAngle)
 			{
 				mainSail.TurnBoom(-1, dt);
 			}
 		}
 		else
 		{
-			if (mainSail.getMainSailAngle() < -5)
+			if (mainSail.getMainSailAngle() < -minMainSailAngle)
 			{
 				mainSail.TurnBoom(+1, dt);
 			}
@@ -263,14 +273,14 @@ void SailBoat::Sails::ReleaseMainSheat(Vec2 appWind, const float windTBA, const 
 	{
 		if (windTBA < 180)
 		{
-			if (mainSail.getMainSailAngle() < 85)
+			if (mainSail.getMainSailAngle() < maxMainSailAngle)
 			{
 				mainSail.TurnBoom(+1, dt);
 			}
 		}
 		else
 		{
-			if (mainSail.getMainSailAngle() > -85)
+			if (mainSail.getMainSailAngle() > -maxMainSailAngle)
 			{
 				mainSail.TurnBoom(-1, dt);
 			}
@@ -346,5 +356,5 @@ void SailBoat::Sails::MainSail::setCriticAngle()
 
 bool SailBoat::Sails::MainSail::CheckFinishedTackOrJibe()
 {
-	return mainSailAngle >= - angleAtCriticPoint - 1 && mainSailAngle <= -angleAtCriticPoint + 1;
+	return mainSailAngle >= - angleAtCriticPoint - 0.2f && mainSailAngle <= -angleAtCriticPoint + 0.2f;
 }

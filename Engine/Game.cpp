@@ -48,19 +48,19 @@ void Game::Go()
 void Game::UpdateModel(float dt)
 {
 	Wind localWind = sea.getLocalWind(playerBoat.getPosition());
-	if (wnd.kbd.KeyIsPressed(VK_LEFT))
+	if (wnd.kbd.KeyIsPressed(VK_LEFT)) // turn rudder left
 	{
 		playerBoat.tiltRudder(-1,dt);
 	}
-	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT)) // turn ruder right
 	{
 		playerBoat.tiltRudder(+1, dt);
 	}
-	if (wnd.kbd.KeyIsPressed(0x57)) // Key W
+	if (wnd.kbd.KeyIsPressed(0x57)) // Key W - release Main Sail
 	{
 		playerBoat.ReleaseMainSheet(localWind, dt);
 	}
-	if (wnd.kbd.KeyIsPressed(0x53)) // Key S
+	if (wnd.kbd.KeyIsPressed(0x53)) // Key S - tight Main Sail
 	{
 		playerBoat.TightMainSheet(localWind, dt);
 	}

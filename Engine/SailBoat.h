@@ -20,6 +20,7 @@ public:
 	void setWindToBoat(Wind locWind);
 	void ReleaseMainSheet(Wind locWind, const float dt);
 	void TightMainSheet(Wind locWind, const float dt);
+	void setSpeed(Wind trueWind, const float dt);
 	void Update(const float dt, Board& brd, Wind& wind);
 	void Draw(Graphics& gfx) const;
 
@@ -45,6 +46,8 @@ public:
 		void Draw(Graphics& gfx) const;
 	private:
 		Color rudderColor = Colors::Green;
+		const float rudderLength = 20.0f;
+		const int rudderThickness = 4;
 		float speedOfTilting = 100.0f;
 		float rudderAngle;
 	};
@@ -55,6 +58,7 @@ public:
 		void Draw(Graphics& gfx, Vec2 MastPosition) const;
 	private:
 		Color windIndicatorColor = Colors::Red;
+		const int WIwidth = 3;
 		float WIangle;
 	};
 	class Sails
@@ -104,6 +108,8 @@ public:
 			Color jibColor = Colors::LightGray;
 		};
 	private:
+		const float minMainSailAngle = 5;
+		const float maxMainSailAngle = 85;
 		MainSail mainSail;
 		Jib jib;
 	};
@@ -123,7 +129,10 @@ private:
 	Vec2 boatVelocityToWater;
 	Vec2 drivingWind = { 0.0f,0.0f };
 	Vec2 apparentWind = { 0.0f,0.0f };
-	float speedOfTurning = boatVelocityToWater.GetLength() * 0.01f;
+	const float speedOfTurningCoeff = 0.01f;
+	float speedOfTurning;
 	float windToBoatAngle = 0;
+	const float maxBoatSpeedCoeff = 1.1;
+	float maxCurrentBoatSpeed;
 };
 
