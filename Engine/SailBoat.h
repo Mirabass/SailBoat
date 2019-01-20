@@ -83,14 +83,16 @@ public:
 			void setCriticAngle();
 			bool CheckFinishedTackOrJibe();
 		private:
-			Color mainSailColor = Colors::Black;
 			const float mainSailThickness = 2.0f;
-			Color boomColor = Colors::Black;
 			const float boomThickness = 6.0f;
 			const float boomLength = 100.0f;
-			Color mainSheetColor = Colors::Magenta;
 			const float mainSheetThickness = 3.0f;
-			static constexpr float basicSpeedOfControlling = 20.0f;
+			const float basicSpeedOfControlling = 20.0f;
+			const float speedOfTack = 0.5;
+			const float speedOfJibe = 0.9;
+			Color mainSailColor = Colors::Black;
+			Color boomColor = Colors::Black;
+			Color mainSheetColor = Colors::Magenta;
 			float speedOfControlling = basicSpeedOfControlling;
 			float mainSailAngle;
 			float angleAtCriticPoint = mainSailAngle;

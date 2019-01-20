@@ -212,14 +212,17 @@ void SailBoat::Sails::TightMainSheat(Vec2 appWind, const float windTBA, const fl
 
 void SailBoat::Sails::TackOrJibe(Vec2 appWind, const float windTBA, const float dt)
 {
-	mainSail.underControl = mainSail.CheckWindToMainSail(windTBA);
+	if (mainSail.underControl)
+	{
+		mainSail.underControl = mainSail.CheckWindToMainSail(windTBA);
+	}
 	if (!mainSail.underControl || tacking || jibbing)
 	{
 		if (mainSail.underControlFirstly)
 		{
 			mainSail.setCriticAngle();
 		}	
-		if (abs(windTBA) > 5)
+		if (windTBA > 5 || windTBA < 355)
 		{
 			tacking = true;
 			if (windTBA < 180)
@@ -248,6 +251,7 @@ void SailBoat::Sails::TackOrJibe(Vec2 appWind, const float windTBA, const float 
 			tacking = false;
 			jibbing = false;
 			mainSail.underControl = true;
+			mainSail.underControlFirstly = true;
 		}
 	}
 }
@@ -321,14 +325,14 @@ bool SailBoat::Sails::MainSail::CheckWindToMainSail(const float windToBoat)
 
 void SailBoat::Sails::MainSail::Tack(Vec2 appWind, const float direction, const float dt)
 {
-	speedOfControlling = basicSpeedOfControlling + appWind.GetLength() * 0.1;
+	speedOfControlling = basicSpeedOfControlling + appWind.GetLength() * speedOfTack;
 	TurnBoom(direction, dt);
 	speedOfControlling = basicSpeedOfControlling;
 }
 
 void SailBoat::Sails::MainSail::Jibe(Vec2 appWind, const float direction, const float dt)
 {
-	speedOfControlling = basicSpeedOfControlling + appWind.GetLength() * 0.8;
+	speedOfControlling = basicSpeedOfControlling + appWind.GetLength() * speedOfJibe;
 	TurnBoom(direction, dt);
 	speedOfControlling = basicSpeedOfControlling;
 }
