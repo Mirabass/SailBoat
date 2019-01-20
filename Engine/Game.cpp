@@ -25,7 +25,7 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	playerBoat(Vec2(3000,4000))
+	playerBoat(Vec2(3000,4000), Vec2(0,-40))
 {
 
 }

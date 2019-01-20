@@ -10,7 +10,7 @@ class SailBoat
 {
 public:
 	SailBoat() = default;
-	SailBoat(const Vec2& pos);
+	SailBoat(const Vec2& pos, const Vec2& velocity);
 	~SailBoat();
 	Vec2 getPosition() const;
 	Vec2 getLocation() const;
@@ -90,7 +90,7 @@ public:
 			const float basicSpeedOfControlling = 20.0f;
 			const float speedOfTack = 0.5;
 			const float speedOfJibe = 0.9;
-			Color mainSailColor = Colors::Black;
+			Color mainSailColor = Colors::White;
 			Color boomColor = Colors::Black;
 			Color mainSheetColor = Colors::Magenta;
 			float speedOfControlling = basicSpeedOfControlling;
@@ -120,7 +120,7 @@ private:
 	WindIndicator windIndicator;
 	Vec2 mastPosition = { mastPositionX, mastPositionY };
 	Sails sails;
-	Vec2 boatVelocityToWater = { 0.0f, -40.0f };
+	Vec2 boatVelocityToWater;
 	Vec2 drivingWind = { 0.0f,0.0f };
 	Vec2 apparentWind = { 0.0f,0.0f };
 	float speedOfTurning = boatVelocityToWater.GetLength() * 0.01f;
