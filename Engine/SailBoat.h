@@ -10,7 +10,7 @@ class SailBoat
 {
 public:
 	SailBoat() = default;
-	SailBoat(const Vec2& pos, const Vec2& velocity);
+	SailBoat(const Vec2& pos, const Vec2& velocity, const float& startingMainSailAngle);
 	~SailBoat();
 	Vec2 getPosition() const;
 	Vec2 getLocation() const;

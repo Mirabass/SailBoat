@@ -3,12 +3,12 @@
 #include <math.h>
 
 
-SailBoat::SailBoat(const Vec2 & pos, const Vec2& velocity)
+SailBoat::SailBoat(const Vec2 & pos, const Vec2& velocity, const float& startingMainSailAngle)
 	:
 	hull(Vec2(float(playerBoatLocationX), float(playerBoatLocationY)), 0.0f),
 	rudder(0.0f),
 	position(pos),
-	sails(-5.0f),
+	sails(-startingMainSailAngle),
 	boatVelocityToWater(velocity)
 {
 }
